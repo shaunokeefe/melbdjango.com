@@ -38,7 +38,7 @@ def idea_detail(request, idea_id):
     idea = get_object_or_404(Idea, pk=idea_id)
 
     return render(request, 'hacks/idea_detail.html', {
-        'object': idea,
+        'idea': idea,
     })
 
 @require_POST
