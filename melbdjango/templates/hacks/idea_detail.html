@@ -19,6 +19,12 @@
 {% endfor %}
 </ol>
 {% if user.is_authenticated %}
+<form method="POST" action="{{ idea.get_voteup_url }}">
+    {% csrf_token %}<button type="submit">Up!</button>
+</form>
+<form method="POST" action="{{ idea.get_votedown_url }}">{% csrf_token %}
+    <button type="submit">Down!</button>
+</form>
 <form method="POST" action="{{ idea.get_comment_url }}">{% csrf_token %}
 <table>
     {{ form.as_table }}
