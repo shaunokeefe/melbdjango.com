@@ -42,17 +42,31 @@ def idea_detail(request, idea_id):
     })
 
 @require_POST
+def idea_vote_retract(request, idea_id):
+    '''Retract a vote'''
+    idea = get_object_or_404(Idea, pk=idea_id)
+    try:
+        vote = Vote.objects.get(user=request.user, idea=idea)
+        vote.delete()
+        messages.success(request, 'You retracted your vote for "%s"!' % (idea))
+    except Vote.DoesNotExist:
+        messages.success(request, 'You havnt voted on the idea "%s"' % (idea))
+
+    return redirect(idea)
+
+
+@require_POST
 def idea_vote(request, idea_id, direction):
     '''Cast a vote'''
     idea = get_object_or_404(Idea, pk=idea_id)
 
-    try:
-        with transaction.atomic():
-            vote = Vote.objects.create(user=request.user, idea=idea, value=direction)
-    except IntegrityError:
-        messages.warning(request, 'You can only vote once on each idea.')
-    else:
-        messages.success(request, 'You %s voted %s!' % (vote.get_value_display(), idea))
+    vote, created = Vote.objects.get_or_create(user=request.user, idea=idea,
+            defaults={'value': direction})
+    if not created:
+        vote.value = direction
+        vote.save()
+
+    messages.success(request, 'You %s voted %s!' % (vote.get_value_display(), idea))
 
     return redirect(idea)
 

@@ -33,6 +33,10 @@ class Idea(models.Model):
         return ('idea-vote-down', (), {'idea_id': self.pk})
 
     @models.permalink
+    def get_vote_retract_url(self):
+        return ('idea-vote-retract', (), {'idea_id': self.pk})
+
+    @models.permalink
     def get_comment_url(self):
         return ('idea-comment', (), {'idea_id': self.pk})
 
