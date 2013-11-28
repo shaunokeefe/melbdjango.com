@@ -19,6 +19,15 @@
 {% endfor %}
 </ol>
 {% if user.is_authenticated %}
+<form method="POST" action="{{ object.get_voteup_url }}">
+    {% csrf_token %}<button type="submit">Up!</button>
+</form>
+<form method="POST" action="{{ object.get_votedown_url }}">{% csrf_token %}
+    <button type="submit">Down!</button>
+</form>
+<form method="POST" action="{{ object.get_vote_retract_url }}">{% csrf_token %}
+    <button type="submit">Retract!</button>
+</form>
 <form method="POST" action="{{ object.get_comment_url }}">{% csrf_token %}
 <table>
     {{ form.as_table }}
