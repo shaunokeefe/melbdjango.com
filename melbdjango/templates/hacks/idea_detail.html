@@ -2,15 +2,15 @@
 
 {% block content %}
 
-<h1> {{ idea.title }} ({{ idea.total_votes }})</h1>
+<h1> {{ object.title }} ({{ object.total_votes }})</h1>
 
 <div>
-    <p>{{ idea.description }}</p>
+    <p>{{ object.description }}</p>
 </div>
 
 <h2> Comments </h2>
 <ol>
-{% for comment in idea.comments_set.all %}
+{% for comment in object.comments_set.all %}
     <li>
         <h3> {{ comment.user }} </h3>
         <time> {{ comment.created }} </time>
@@ -19,7 +19,7 @@
 {% endfor %}
 </ol>
 {% if user.is_authenticated %}
-<form method="POST" action="{{ idea.get_comment_url }}">{% csrf_token %}
+<form method="POST" action="{{ object.get_comment_url }}">{% csrf_token %}
 <table>
     {{ form.as_table }}
 </table>
